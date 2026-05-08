@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Seeing - Your Movies, Your Rules</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f3f4f6;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .cta-button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-image {
+            flex: 1;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .secondary-button {
+            background-color: #e5e7eb;
+            color: var(--text-dark);
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .secondary-button:hover {
+            background-color: #d1d5db;
+        }
+
+        /* Features */
+        .features {
+            padding: 100px 0;
+            background-color: var(--bg-light);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+        }
+
+        .key-point {
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Comparison Table */
+        .comparison {
+            padding: 100px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 20px;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 100px 0;
+            background-color: var(--bg-light);
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .step-number {
+            background: var(--primary-color);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .ui-mockup {
+            text-align: center;
+        }
+
+        .ui-mockup img {
+            max-width: 800px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Privacy */
+        .privacy {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .privacy-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .privacy h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .privacy p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .final-cta p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .final-cta .cta-button {
+            background-color: var(--white);
+            color: var(--primary-color);
+            font-size: 18px;
+            padding: 15px 40px;
+        }
+
+        .final-cta .cta-button:hover {
+            background-color: #f8fafc;
+        }
+
+        .experience-img {
+            margin-top: 50px;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 0;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .footer-links {
+            margin-top: 20px;
+        }
+
+        .footer-links a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .button-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">🛡️ Safe Seeing</div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#why-ai">Why AI?</a></li>
+                    <li><a href="#privacy">Privacy</a></li>
+                    <li><a href="https://github.com">GitHub</a></li>
+                </ul>
+            </nav>
+            <a href="#" class="cta-button">Get Started</a>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Your Movies, Your Rules.<br>Every Scene, Family-Friendly.</h1>
+                <p>The world’s first AI-powered, local-first movie filter. No subscriptions. No tracking. Just pure family movie night magic.</p>
+                <div class="button-group">
+                    <a href="#" class="cta-button">Download for Desktop</a>
+                    <a href="#" class="secondary-button">View Source on GitHub</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- Place before_after_contrast.png here -->
+                <img src="img/before_after_contrast.png" alt="Before and After Contrast">
+            </div>
+        </section>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Total Content Control, Powered by AI</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🔊 Audio Profanity Filtering</h3>
+                    <p>Safe Seeing uses OpenAI's Whisper model to transcribe and analyze audio in real-time. It detects coarse language and mutes the audio with millisecond precision.</p>
+                    <p class="key-point">No more scramble for the remote.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔞 NSFW Visual Detection</h3>
+                    <p>Advanced computer vision models scan every frame for nudity or suggestive content. Safe Seeing automatically blurs or skips these scenes based on your preferences.</p>
+                    <p class="key-point">Protect your children without missing the story.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚔️ Violence & Weapon Detection</h3>
+                    <p>Custom-trained YOLOv8 models identify weapons, blood, and graphic violence. You decide the level of intensity that's right for your home.</p>
+                    <p class="key-point">Tailor the intensity of any action movie.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="why-ai" class="comparison">
+        <div class="container">
+            <div class="section-header">
+                <h2>Stop Waiting. Start Watching.</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Manual Filtering (Old Way)</th>
+                        <th>AI Filtering (Safe Seeing)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Wait weeks for community-made "filters".</td>
+                        <td>Analyze ANY movie, instantly.</td>
+                    </tr>
+                    <tr>
+                        <td>Limited to popular streaming titles.</td>
+                        <td>Works with your entire local collection.</td>
+                    </tr>
+                    <tr>
+                        <td>Cloud dependency & data tracking.</td>
+                        <td>100% Local. 100% Private.</td>
+                    </tr>
+                    <tr>
+                        <td>One-size-fits-all settings.</td>
+                        <td>Fully customizable sensitivity levels.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div><strong>Choose Your Movie</strong> - Point Safe Seeing to any local video file (MP4, MKV, AVI).</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div><strong>AI Analysis</strong> - Our models scan the audio and video in minutes (hardware accelerated).</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div><strong>Family Movie Night</strong> - Watch your safe, tailored version with zero interruptions.</div>
+                </div>
+            </div>
+            <div class="ui-mockup">
+                <!-- Embed ui_mockup.png showing the dashboard -->
+                <img src="img/ui_mockup.png" alt="Safe Seeing UI Mockup">
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy -->
+    <section id="privacy" class="privacy">
+        <div class="container">
+            <div class="privacy-content">
+                <h2>Your Data, Your Home.</h2>
+                <p>Most "family filters" track what you watch and when. We think that's wrong.</p>
+                <p>Safe Seeing is <strong>Local-First</strong>. No video data, watch history, or personal info ever leaves your computer.</p>
+                <p>Secure by design. Private by default.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Reclaim Family Movie Night.</h2>
+            <p>Join thousands of parents who have taken control of their media. Safe Seeing is free, open-source, and ready for your next movie.</p>
+            <a href="#" class="cta-button">Download Safe Seeing Now</a>
+            <br>
+            <!-- Use family_experience.png here -->
+            <img src="img/family_experience.png" alt="Happy Family Movie Night" class="experience-img">
+        </div>
+    </section>
+
+    <div class="container">
+        <footer>
+            <p>© 2026 Safe Seeing Project</p>
+            <div class="footer-links">
+                <a href="#">GitHub</a>
+                <a href="#">Contributing</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Contact</a>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
