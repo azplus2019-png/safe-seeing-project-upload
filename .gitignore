@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Models
+models/
+*.pt
+*.onnx
+
+# Temporary files
+temp_audio.wav
+temp_audio_safe.wav
+filtered_video.mp4
+output_safe_video.mp4
+output_safe_movie.mp4
