@@ -133,6 +133,7 @@ class SafeSeeing:
         video = VideoFileClip(input_path)
         
         def process_frame(get_frame, t):
+            # print(f"DEBUG: process_frame at t={t}")
             frame = get_frame(t)
             
             # Find closest cached detection
@@ -151,22 +152,31 @@ class SafeSeeing:
                 return cv2.GaussianBlur(frame, (99, 99), 0)
             
             # Apply Nudity Blur (Targeted)
-            for d in detections['nsfw']:
-                x, y, w, h = d['box']
-                x1, y1 = max(0, int(x)), max(0, int(y))
-                x2, y2 = min(frame.shape[1], int(x + w)), min(frame.shape[0], int(y + h))
-                if x2 > x1 and y2 > y1:
-                    region = frame[y1:y2, x1:x2]
-                    if region.size > 0:
-                        frame[y1:y2, x1:x2] = cv2.GaussianBlur(region, (51, 51), 0)
+            if detections['nsfw']:
+                frame = frame.copy()
+                for d in detections['nsfw']:
+                    x, y, w, h = d['box']
+                    x1, y1 = max(0, int(x)), max(0, int(y))
+                    x2, y2 = min(frame.shape[1], int(x + w)), min(frame.shape[0], int(y + h))
+                    if x2 > x1 and y2 > y1:
+                        region = frame[y1:y2, x1:x2]
+                        if region.size > 0:
+                            frame[y1:y2, x1:x2] = cv2.GaussianBlur(region, (51, 51), 0)
             
             return frame
 
         def process_audio(get_frame, t):
             frame = get_frame(t)
-            for start, end in self.mute_intervals:
-                if start <= t <= end:
-                    return frame * 0
+            if isinstance(t, np.ndarray):
+                mask = np.zeros(t.shape, dtype=bool)
+                for start, end in self.mute_intervals:
+                    mask |= (t >= start) & (t <= end)
+                if mask.any():
+                    frame[mask] = 0
+            else:
+                for start, end in self.mute_intervals:
+                    if start <= t <= end:
+                        return frame * 0
             return frame
 
         print("Applying filters and rendering final video...")
@@ -175,7 +185,7 @@ class SafeSeeing:
         
         # Apply audio filter
         if video.audio:
-            filtered_audio = video.audio.with_effects([lambda clip: clip.fl_audio(process_audio)])
+            filtered_audio = video.audio.transform(process_audio)
             processed_video = processed_video.with_audio(filtered_audio)
         
         processed_video.write_videofile(output_path, codec="libx264", audio_codec="aac")
